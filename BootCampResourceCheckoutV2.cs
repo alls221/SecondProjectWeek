@@ -11,20 +11,45 @@ namespace BootCampReSourceCheckoutV2
     {
         static void Title() // method to print the title
         {
-            Console.WriteLine("WCCI Bootcamp Resources Checkout System\n\n\n");
+            StringBuilder title = new StringBuilder();
+            title.Append("WCCI ");
+            title.Append("Bootcamp ");
+            title.Append("Resources ");
+            title.Append("Checkout ");
+            title.Append("System.");
+            Console.WriteLine(title + "\n\n\n");
         }
         static void Menu() //method to print the menu
         {
-            List<string> menu = new List<string>() { "1-View Students", "2-View Avalable Resources", "3-View Student Accounts", "4-Checkout Item", "5-Return Item", "6-Exit" };
+            List<string> menu = new List<string>() { "1-View Students", "2-View Avalable Resources", "3-View Student Accounts", "4-Checkout Item", "5-Return Item", "6-Checked Out Resources", "7-Exit" };
             for (int i = 0; i < menu.Count; i++)
             {
                 Console.WriteLine(menu[i]);
             }
-            Console.WriteLine("Select a menu option");
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Select ");
+            sb.Append("a ");
+            sb.Append("menu ");
+            sb.Append("option ");
+            sb.Append("by ");
+            sb.Append("number.");
+            Console.WriteLine(sb);
         }
         static void ReturnToMain() // clears the screen before returning to the main menu
         {
-            Console.WriteLine("\nPress any key to return to main menu");
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Press ");
+            sb.Append("any ");
+            sb.Append("key ");
+            sb.Append("to ");
+            sb.Append("return ");
+            sb.Append("to ");
+            sb.Append("the ");
+            sb.Append("main ");
+            sb.Append("menu.");
+
+
+            Console.WriteLine("\n"+ sb);
             Console.ReadKey();
             Console.Clear();
         }
@@ -53,7 +78,8 @@ namespace BootCampReSourceCheckoutV2
 
             while (true)
             {
-                Console.WriteLine("If You dont know the id number, type \"List\" to view a list of students");
+                Console.WriteLine("Enter the Id number of the student.");
+                Console.WriteLine("If You dont know the id number, type \"List\" to view a list of students.");
                 string Input = Console.ReadLine();
 
                 if (Input.Equals("List", StringComparison.CurrentCultureIgnoreCase))
@@ -89,7 +115,6 @@ namespace BootCampReSourceCheckoutV2
             List<string> checkedOutResources = new List<string>{ };
             while (true)
             {
-                
                 Title();
                 Menu();
                 string choice = Console.ReadLine();
@@ -102,7 +127,7 @@ namespace BootCampReSourceCheckoutV2
                     ReturnToMain();
                 }
 
-                if (menuChoice == 6) // allows the user to exit the program breaking the while loop
+                if (menuChoice == 7) // allows the user to exit the program breaking the while loop
                 {
                     Console.WriteLine("Exiting");
                     break;
@@ -139,7 +164,6 @@ namespace BootCampReSourceCheckoutV2
                     case 3: //this sections is for student accounts
                         Console.Clear();
                         Title();
-                        Console.WriteLine("Enter the students id to view an account");
                         int id = Idgetter();
                         switch (id) // this switch case uses the individual student lists to view their account
                         {
@@ -207,216 +231,171 @@ namespace BootCampReSourceCheckoutV2
                         ReturnToMain();
                         break;
                     case 4: // check out resources
-                        while (true)
+                        Console.Clear();
+                        Title();
+                        int studentnum = Idgetter();
+                        StreamWriter sw = new StreamWriter(filename(studentnum, students));
+                        using (sw)
                         {
-                            bool doubleContinue = false;
-                            bool doubleBreak = false;
-                            Console.Clear();
-                            Title();
-                            Console.WriteLine("Enter the Id number of the student checking out");
-                            int num = Idgetter();
-                            StreamWriter studentsTofile = new StreamWriter(filename(num, students));
-                            // add using statement for studentsToFile here and then make the files
-                            string name;
-                            string resourceout;
-                            switch (num)
+                            switch (studentnum)
                             {
                                 case 101:
-                                    students.TryGetValue(101, out name);
-                                    Console.WriteLine(name);
-                                    while (true)
+                                    if (student101.Count == 4)
                                     {
-                                        
-                                        Console.WriteLine("What resource would you like to check out?");
-                                        resourceout = Console.ReadLine();
-                                        if (resources.Contains(resourceout) == true)
+                                        Console.WriteLine(student101[0] + " has checked out max number of resources");
+                                        ReturnToMain();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Enter a resource to check out");
+                                        string resourceOut = Console.ReadLine();
+                                        if (resources.Contains(resourceOut))
                                         {
-                                            student101.Add(resourceout);
-                                            resources.Remove(resourceout);
-                                            checkedOutResources.Add(resourceout);
+                                            student101.Add(resourceOut);
+                                            resources.Remove(resourceOut);
+                                            checkedOutResources.Add(resourceOut);
+                                            for (int i = 0; i < student101.Count; i++)
+                                            {
+                                                sw.WriteLine(student101[i]);
+                                            }
+                                            Console.WriteLine(student101[0] + " has checked out " + resourceOut);
+                                            ReturnToMain();
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Error, Invalid entry.");
-                                            continue;
+                                            Console.WriteLine("Invalid Entry");
+                                            ReturnToMain();
                                         }
-                                        Console.WriteLine("Does " + name + " want to check out another resource?");
-                                        Console.WriteLine("Y for yes or N for no");
-                                        string answer = Console.ReadLine();
-                                        if (answer == "Y" || answer == "yes")
-                                        {
-                                            doubleContinue = true;
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            Console.Clear();
-                                            doubleBreak = true;
-                                            break;
-                                        }
-                                        
                                     }
                                     break;
                                 case 102:
-                                    students.TryGetValue(102, out name);
-                                    Console.WriteLine(name);
-                                    while (true)
+                                    if (student102.Count == 4)
                                     {
-                                        Console.WriteLine("What resource would you like to check out?");
-                                        resourceout = Console.ReadLine();
-                                        if (resources.Contains(resourceout) == true)
+                                        Console.WriteLine(student102[0] + " has checked out max number of resources");
+                                        ReturnToMain();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Enter a resource to check out");
+                                        string resourceOut = Console.ReadLine();
+                                        if (resources.Contains(resourceOut))
                                         {
-                                            student102.Add(resourceout);
-                                            resources.Remove(resourceout);
-                                            checkedOutResources.Add(resourceout);
+                                            student102.Add(resourceOut);
+                                            resources.Remove(resourceOut);
+                                            checkedOutResources.Add(resourceOut);
+                                            for (int i = 0; i < student102.Count; i++)
+                                            {
+                                                sw.WriteLine(student102[i]);
+                                            }
+                                            Console.WriteLine(student102[0] + " has checked out " + resourceOut);
+                                            ReturnToMain();
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Error, Invalid entry.");
-                                            continue;
-                                        }
-                                        Console.WriteLine("Does " + name + " want to check out another resource?");
-                                        Console.WriteLine("Y for yes or N for no");
-                                        string answer = Console.ReadLine();
-                                        if (answer == "Y" || answer == "yes")
-                                        {
-                                            doubleContinue = true;
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            Console.Clear();
-                                            doubleBreak = true;
-                                            break;
+                                            Console.WriteLine("Invalid Entry");
+                                            ReturnToMain();
                                         }
                                     }
                                     break;
                                 case 103:
-                                    students.TryGetValue(103, out name);
-                                    Console.WriteLine(name);
-                                    while (true)
+                                    if (student103.Count == 4)
                                     {
-                                        Console.WriteLine("What resource would you like to check out?");
-                                        resourceout = Console.ReadLine();
-                                        if (resources.Contains(resourceout) == true)
+                                        Console.WriteLine(student103[0] + " has checked out max number of resources");
+                                        ReturnToMain();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Enter a resource to check out");
+                                        string resourceOut = Console.ReadLine();
+                                        if (resources.Contains(resourceOut))
                                         {
-                                            student103.Add(resourceout);
-                                            resources.Remove(resourceout);
-                                            checkedOutResources.Add(resourceout);
+                                            student103.Add(resourceOut);
+                                            resources.Remove(resourceOut);
+                                            checkedOutResources.Add(resourceOut);
+                                            for (int i = 0; i < student103.Count; i++)
+                                            {
+                                                sw.WriteLine(student103[i]);
+                                            }
+                                            Console.WriteLine(student103[0] + " has checked out " + resourceOut);
+                                            ReturnToMain();
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Error, Invalid entry.");
-                                            continue;
-                                        }
-
-                                        Console.WriteLine("Does " + name + " want to check out another resource?");
-                                        Console.WriteLine("Y for yes or N for no");
-                                        string answer = Console.ReadLine();
-                                        if (answer == "Y" || answer == "yes")
-                                        {
-                                            doubleContinue = true;
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            Console.Clear();
-                                            doubleBreak = true;
-                                            break;
+                                            Console.WriteLine("Invalid Entry");
+                                            ReturnToMain();
                                         }
                                     }
                                     break;
                                 case 104:
-                                    students.TryGetValue(104, out name);
-                                    Console.WriteLine(name);
-                                    while (true)
+                                    if (student104.Count == 4)
                                     {
-                                        Console.WriteLine("What resource would you like to check out?");
-                                        resourceout = Console.ReadLine();
-                                        if (resources.Contains(resourceout) == true)
+                                        Console.WriteLine(student104[0] + " has checked out max number of resources");
+                                        ReturnToMain();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Enter a resource to check out");
+                                        string resourceOut = Console.ReadLine();
+                                        if (resources.Contains(resourceOut))
                                         {
-                                            student104.Add(resourceout);
-                                            resources.Remove(resourceout);
-                                            checkedOutResources.Add(resourceout);
+                                            student104.Add(resourceOut);
+                                            resources.Remove(resourceOut);
+                                            checkedOutResources.Add(resourceOut);
+                                            for (int i = 0; i < student104.Count; i++)
+                                            {
+                                                sw.WriteLine(student104[i]);
+                                            }
+                                            Console.WriteLine(student104[0] + " has checked out " + resourceOut);
+                                            ReturnToMain();
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Error, Invalid entry.");
-                                            continue;
-                                        }
-                                        Console.WriteLine("Does " + name + " want to check out another resource?");
-                                        Console.WriteLine("Y for yes or N for no");
-                                        string answer = Console.ReadLine();
-                                        if (answer == "Y" || answer == "yes")
-                                        {
-                                            doubleContinue = true;
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            Console.Clear();
-                                            doubleBreak = true;
-                                            break;
+                                            Console.WriteLine("Invalid Entry");
+                                            ReturnToMain();
                                         }
                                     }
                                     break;
                                 case 105:
-                                    students.TryGetValue(105, out name);
-                                    Console.WriteLine(name);
-                                    while (true)
+                                    if (student105.Count == 4)
                                     {
-                                        Console.WriteLine("What resource would you like to check out?");
-                                        resourceout = Console.ReadLine();
-                                        if (resources.Contains(resourceout) == true)
+                                        Console.WriteLine(student105[0] + " has checked out max number of resources");
+                                        ReturnToMain();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Enter a resource to check out");
+                                        string resourceOut = Console.ReadLine();
+                                        if (resources.Contains(resourceOut))
                                         {
-                                            student105.Add(resourceout);
-                                            resources.Remove(resourceout);
-                                            checkedOutResources.Add(resourceout);
+                                            student105.Add(resourceOut);
+                                            resources.Remove(resourceOut);
+                                            checkedOutResources.Add(resourceOut);
+                                            for (int i = 0; i < student105.Count; i++)
+                                            {
+                                                sw.WriteLine(student105[i]);
+                                            }
+                                            Console.WriteLine(student105[0] + " has checked out " + resourceOut);
+                                            ReturnToMain();
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Error, Invalid entry.");
-                                            continue;
-                                        }
-                                        Console.WriteLine("Does " + name + " want to check out another resource?");
-                                        Console.WriteLine("Y for yes or N for no");
-                                        string answer = Console.ReadLine();
-                                        if (answer == "Y" || answer == "yes")
-                                        {
-                                            doubleContinue = true;
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            Console.Clear();
-                                            doubleBreak = true;
-                                            break;
+                                            Console.WriteLine("Invalid Entry");
+                                            ReturnToMain();
                                         }
                                     }
                                     break;
-                                default:
-                                    Console.WriteLine("Please enter a student Id number");
-                                    continue;
-                            }
-                            if (doubleBreak == true)
-                            {
-                                break;
-                            }
-                            if (doubleContinue == true)
-                            {
-                                continue;
                             }
                             break;
-                                
-                        }   
-
+                        }
                         case 5: // return an item
                         Console.Clear();
                         while (true)
                         {
                             Title();
-                            Console.WriteLine("Enter the Id number for the student returning an item");
                              int returnInput = Idgetter();
+                            StreamWriter writer = new StreamWriter(filename(returnInput, students));
+                            using (writer)
+                            { 
                                 if (returnInput == 101)
                                 {
                                     Console.WriteLine(student101[0]);
@@ -436,7 +415,11 @@ namespace BootCampReSourceCheckoutV2
                                                 student101.Remove(returnItem);
                                                 checkedOutResources.Remove(returnItem);
                                                 resources.Add(returnItem);
-                                                Console.WriteLine(returnItem + "has been returned");
+                                                Console.WriteLine(returnItem + " has been returned");
+                                                for (int i = 0; i < student101.Count; i++)
+                                                {
+                                                    writer.WriteLine(student101[i]);
+                                                }
                                                 ReturnToMain();
                                                 break;
                                             }
@@ -446,6 +429,11 @@ namespace BootCampReSourceCheckoutV2
                                                 continue;
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No resources out");
+                                        ReturnToMain();
                                     }
                                 }
                                 if (returnInput == 102)
@@ -467,7 +455,11 @@ namespace BootCampReSourceCheckoutV2
                                                 student102.Remove(returnItem);
                                                 checkedOutResources.Remove(returnItem);
                                                 resources.Add(returnItem);
-                                                Console.WriteLine(returnItem + "has been returned");
+                                                Console.WriteLine(returnItem + " has been returned");
+                                                for (int i = 0; i < student102.Count; i++)
+                                                {
+                                                    writer.WriteLine(student102[i]);
+                                                }
                                                 ReturnToMain();
                                                 break;
                                             }
@@ -477,6 +469,11 @@ namespace BootCampReSourceCheckoutV2
                                                 continue;
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No resources out");
+                                        ReturnToMain();
                                     }
                                 }
                                 if (returnInput == 103)
@@ -498,7 +495,11 @@ namespace BootCampReSourceCheckoutV2
                                                 student103.Remove(returnItem);
                                                 checkedOutResources.Remove(returnItem);
                                                 resources.Add(returnItem);
-                                                Console.WriteLine(returnItem + "has been returned");
+                                                Console.WriteLine(returnItem + " has been returned");
+                                                for (int i = 0; i < student103.Count; i++)
+                                                {
+                                                    writer.WriteLine(student103[i]);
+                                                }
                                                 ReturnToMain();
                                                 break;
                                             }
@@ -508,6 +509,11 @@ namespace BootCampReSourceCheckoutV2
                                                 continue;
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No resources out");
+                                        ReturnToMain();
                                     }
                                 }
                                 if (returnInput == 104)
@@ -529,7 +535,11 @@ namespace BootCampReSourceCheckoutV2
                                                 student104.Remove(returnItem);
                                                 checkedOutResources.Remove(returnItem);
                                                 resources.Add(returnItem);
-                                                Console.WriteLine(returnItem + "has been returned");
+                                                Console.WriteLine(returnItem + " has been returned");
+                                                for (int i = 0; i < student104.Count; i++)
+                                                {
+                                                    writer.WriteLine(student104[i]);
+                                                }
                                                 ReturnToMain();
                                                 break;
                                             }
@@ -540,6 +550,11 @@ namespace BootCampReSourceCheckoutV2
                                             }
                                         }
 
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No resources out");
+                                        ReturnToMain();
                                     }
                                 }
                                 if (returnInput == 105)
@@ -561,7 +576,11 @@ namespace BootCampReSourceCheckoutV2
                                                 student105.Remove(returnItem);
                                                 checkedOutResources.Remove(returnItem);
                                                 resources.Add(returnItem);
-                                                Console.WriteLine(returnItem + "has been returned");
+                                                Console.WriteLine(returnItem + " has been returned");
+                                                for (int i = 0; i < student105.Count; i++)
+                                                {
+                                                    writer.WriteLine(student105[i]);
+                                                }
                                                 ReturnToMain();
                                                 break;
                                             }
@@ -571,12 +590,50 @@ namespace BootCampReSourceCheckoutV2
                                                 continue;
                                             }
                                         }
+                                        }
+                                    else
+                                    {
+                                        Console.WriteLine("No resources out");
+                                        ReturnToMain();
                                     }
+                                }
                                 }
                             
                             break;
                         }
                         break;
+                    case 6:
+                        Console.Clear();
+                        Title();
+                        StreamWriter fileOut = new StreamWriter("checkedout.txt");
+                        using (fileOut)
+                        {
+                            if (checkedOutResources.Count==0)
+                            {
+                                fileOut.Write("Nothing is currently checked out");
+                            }
+                            else
+                            {
+                                for (int i = 0; i < checkedOutResources.Count; i++)
+                                {
+                                    fileOut.Write(checkedOutResources[i]);
+                                }
+                            }
+                        }
+                        StreamReader sr = new StreamReader("checkedout.txt");
+                        using (sr)
+                        {
+                            int lineNumber = 0;
+                            string line = sr.ReadLine();
+                            while(line!=null)
+                            {
+                                lineNumber++;
+                                Console.WriteLine(line);
+                                line = sr.ReadLine();
+                            }
+                            ReturnToMain();
+                        }
+                            break;
                 }
             }
         }
